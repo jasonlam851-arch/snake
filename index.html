@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCADE SNAKE 1988</title>
-    <!-- 引入懷舊街機像素字型 -->
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <title>MODERN ARCADE SNAKE</title>
+    <!-- 引入現代科技街機字型 Orbitron 與繁體中文無襯線字型 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -18,28 +18,16 @@
         }
 
         body {
-            background-color: #050508;
-            color: #00ffcc;
-            font-family: 'Press Start 2P', monospace;
+            background: #090c10;
+            background-image: radial-gradient(circle at 50% 50%, #151d2a 0%, #090c10 100%);
+            color: #00f0ff;
+            font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 10px;
             overflow: hidden;
-            position: relative;
-        }
-
-        /* CRT 螢幕掃描線模擬效果 */
-        body::after {
-            content: " ";
-            display: block;
-            position: absolute;
-            top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
-            background-size: 100% 4px;
-            z-index: 10;
-            pointer-events: none;
         }
 
         /* ---------------- 主選單 & 設定面板樣式 ---------------- */
@@ -48,39 +36,47 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(10, 10, 15, 0.95);
-            border: 4px solid #00ffcc;
-            box-shadow: 0 0 25px rgba(0, 255, 204, 0.4), inset 0 0 15px rgba(0, 255, 204, 0.2);
-            border-radius: 8px;
-            padding: 40px 25px;
+            background: rgba(15, 22, 36, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 240, 255, 0.15);
+            border-radius: 12px;
+            padding: 40px 30px;
             width: 340px;
             text-align: center;
             z-index: 2;
         }
 
         .game-title {
-            font-size: 1.3rem;
-            color: #ff007f;
-            text-shadow: 3px 3px #00ffff, -3px -3px #ff007f;
-            margin-bottom: 35px;
-            line-height: 1.5;
-            letter-spacing: 2px;
-            animation: pulseTitle 2s infinite alternate;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            line-height: 1.3;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+
+        .game-title span {
+            color: #ff0055;
+            text-shadow: 0 0 10px rgba(ff, 0, 85, 0.5);
         }
 
         .button-group {
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 16px;
             width: 100%;
         }
 
         .menu-btn {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.75rem;
-            padding: 15px 10px;
-            border: 2px solid transparent;
-            border-radius: 4px;
+            font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 14px 16px;
+            border: 1px solid transparent;
+            border-radius: 6px;
             cursor: pointer;
             position: relative;
             display: flex;
@@ -88,50 +84,47 @@
             align-items: center;
             transition: all 0.2s ease;
             outline: none;
+            letter-spacing: 1px;
         }
 
         .btn-start {
-            background-color: #00ffcc;
-            color: #000;
-            border-color: #00ffcc;
-            box-shadow: 0 0 10px #00ffcc, 4px 4px 0px #ff007f;
-            font-weight: bold;
+            background: linear-gradient(135deg, #00f0ff 0%, #0088ff 100%);
+            color: #000000;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.3);
         }
 
         .btn-start:hover {
             transform: translateY(-2px);
-            box-shadow: 0 0 18px #00ffcc, 6px 6px 0px #ff007f;
+            box-shadow: 0 6px 20px rgba(0, 240, 255, 0.5);
         }
 
         .btn-settings {
-            background-color: #111122;
-            color: #00ffcc;
-            border-color: #00ffcc;
-            box-shadow: 3px 3px 0px #ff007f;
+            background: rgba(255, 255, 255, 0.05);
+            color: #00f0ff;
+            border-color: rgba(0, 240, 255, 0.4);
         }
 
         .btn-settings:hover {
-            background-color: #00ffcc;
-            color: #000;
+            background: rgba(0, 240, 255, 0.15);
+            border-color: #00f0ff;
         }
 
         .btn-disabled {
-            background-color: #1a1a24;
-            color: #555566;
-            border-color: #333344;
+            background: rgba(255, 255, 255, 0.02);
+            color: #4a5568;
+            border-color: rgba(255, 255, 255, 0.08);
             cursor: not-allowed;
-            box-shadow: 2px 2px 0px #111;
         }
 
         .lock-badge {
-            font-size: 0.55rem;
+            font-size: 0.65rem;
             position: absolute;
-            right: 10px;
-            background: #2a1122;
-            color: #ff4477;
-            padding: 3px 6px;
-            border-radius: 3px;
-            border: 1px solid #ff0055;
+            right: 12px;
+            background: rgba(255, 0, 85, 0.15);
+            color: #ff0055;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 0, 85, 0.3);
         }
 
         /* ---------------- 設定選單獨立面板 ---------------- */
@@ -141,38 +134,39 @@
             align-items: center;
             width: 100%;
             margin-bottom: 25px;
-            font-size: 0.65rem;
-            color: #fff;
+            font-size: 0.8rem;
+            color: #e2e8f0;
         }
 
         .toggle-btn {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.65rem;
-            padding: 10px 15px;
-            border: 2px solid #00ffcc;
+            font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 8px 16px;
+            border: 1px solid #00f0ff;
             border-radius: 4px;
             cursor: pointer;
-            background: #000;
-            color: #00ffcc;
-            box-shadow: 2px 2px 0px #ff007f;
-            transition: all 0.2s;
+            background: rgba(0, 240, 255, 0.1);
+            color: #00f0ff;
+            transition: all 0.2s ease;
         }
 
         .toggle-btn.off {
-            border-color: #ff0055;
-            color: #ff0055;
-            box-shadow: 2px 2px 0px #555;
+            border-color: #4a5568;
+            background: rgba(255, 255, 255, 0.05);
+            color: #a0aec0;
         }
 
         .toast {
             position: fixed;
             top: 20px;
-            background: #ff007f;
-            color: #fff;
-            padding: 12px 20px;
-            font-size: 0.65rem;
-            border-radius: 4px;
-            box-shadow: 0 0 15px #ff007f;
+            background: #ff0055;
+            color: #ffffff;
+            padding: 10px 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border-radius: 6px;
+            box-shadow: 0 4px 15px rgba(255, 0, 85, 0.4);
             z-index: 20;
             opacity: 0;
             transform: translateY(-20px);
@@ -195,35 +189,42 @@
 
         header {
             text-align: center;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .score-board {
             display: flex;
-            gap: 20px;
-            font-size: 0.65rem;
-            color: #fff;
-            text-shadow: 0 0 5px #00ffcc;
+            gap: 25px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 1px;
+        }
+
+        .score-board span {
+            color: #00f0ff;
         }
 
         .game-container {
             position: relative;
-            border: 4px solid #00ffcc;
-            box-shadow: 0 0 15px #00ffcc, inset 0 0 15px #00ffcc;
-            border-radius: 4px;
-            background-color: #000;
+            border: 2px solid rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.15);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #0b0e14;
         }
 
         canvas {
             display: block;
-            background-color: #080808;
+            background-color: #0b0e14;
         }
 
         .game-over-overlay {
             position: absolute;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
+            background: rgba(9, 12, 16, 0.9);
+            backdrop-filter: blur(4px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -233,22 +234,24 @@
 
         .game-over-text {
             color: #ff0055;
-            font-size: 0.9rem;
-            text-shadow: 0 0 8px #ff0055;
-            margin-bottom: 15px;
-            animation: blink 1s infinite;
+            font-size: 1.3rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.5);
         }
 
         .restart-btn {
-            background: #00ffcc;
+            background: linear-gradient(135deg, #00f0ff 0%, #0088ff 100%);
             color: #000;
             border: none;
-            padding: 10px 15px;
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.65rem;
-            font-weight: bold;
-            box-shadow: 3px 3px 0px #ff007f;
+            padding: 10px 20px;
+            font-family: 'Orbitron', 'Noto Sans TC', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 4px;
             cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 240, 255, 0.3);
         }
 
         /* ---------------- 手機操控區 ---------------- */
@@ -257,31 +260,29 @@
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
             gap: 8px;
-            width: 200px;
-            height: 200px;
-            margin-top: 12px;
+            width: 190px;
+            height: 190px;
+            margin-top: 15px;
         }
 
         .btn-pad {
-            background: #111;
-            border: 2px solid #333;
-            border-radius: 10px;
-            color: #fff;
-            font-size: 1.2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #00f0ff;
+            font-size: 1.1rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 5px 0 #222, inset 0 0 8px rgba(255, 255, 255, 0.05);
             cursor: pointer;
-            transition: transform 0.05s ease, background 0.05s ease, box-shadow 0.05s ease;
+            transition: all 0.1s ease;
         }
 
         .btn-pad.active {
-            background: #00ffcc;
-            color: #000;
-            border-color: #ffffff;
-            box-shadow: 0 1px 0 #009977, 0 0 18px #00ffcc;
-            transform: translateY(4px) scale(0.94);
+            background: #00f0ff;
+            color: #000000;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+            transform: scale(0.95);
         }
 
         .btn-up { grid-column: 2; grid-row: 1; }
@@ -290,48 +291,41 @@
         .btn-down { grid-column: 2; grid-row: 3; }
 
         .btn-back {
-            margin-top: 10px;
+            margin-top: 12px;
             background: transparent;
-            color: #ff007f;
-            border: 2px solid #ff007f;
-            padding: 8px 12px;
-            font-size: 0.55rem;
+            color: #a0aec0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            font-size: 0.7rem;
+            font-weight: 700;
             cursor: pointer;
             font-family: inherit;
             border-radius: 4px;
+            transition: all 0.2s ease;
         }
 
         .btn-back:hover {
-            background: #ff007f;
-            color: #fff;
-        }
-
-        @keyframes pulseTitle {
-            0% { text-shadow: 3px 3px #00ffff, -3px -3px #ff007f; }
-            100% { text-shadow: 5px 5px #00ffff, -5px -5px #ff007f; }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+            color: #ffffff;
+            border-color: #ffffff;
+            background: rgba(255, 255, 255, 0.05);
         }
     </style>
 </head>
 <body>
 
-    <!-- 未開放提示彈窗 -->
-    <div id="toast" class="toast">⚠️ 功能暫未開放！</div>
+    <!-- 提示彈窗 -->
+    <div id="toast" class="toast">提示：功能暫未開放</div>
 
     <!-- 1. 主選單介面 -->
     <div id="mainMenu" class="menu-container">
-        <h1 class="game-title">ARCADE<br>SNAKE</h1>
+        <h1 class="game-title">MODERN<br><span>SNAKE</span></h1>
         <div class="button-group">
-            <button class="menu-btn btn-start" onclick="enterGame()">🎮 開始遊戲</button>
+            <button class="menu-btn btn-start" onclick="enterGame()">開始遊戲</button>
             <button class="menu-btn btn-disabled" onclick="showLockedNotice('遊戲商城')">
-                🛒 遊戲商城 <span class="lock-badge">🔒 鎖定</span>
+                遊戲商城 <span class="lock-badge">鎖定</span>
             </button>
             <button class="menu-btn btn-settings" onclick="openSettings()">
-                ⚙️ 遊戲設定
+                遊戲設定
             </button>
         </div>
     </div>
@@ -345,7 +339,7 @@
             <button id="gridToggleBtn" class="toggle-btn" onclick="toggleGrid()">開啟 [ON]</button>
         </div>
 
-        <button class="btn-back" onclick="closeSettings()" style="margin-top: 15px;">◀ 返回主選單</button>
+        <button class="btn-back" onclick="closeSettings()" style="margin-top: 15px;">&lt; 返回主選單</button>
     </div>
 
     <!-- 3. 遊戲進行介面 -->
@@ -361,7 +355,7 @@
             <canvas id="gameCanvas" width="315" height="315"></canvas>
             <div id="gameOver" class="game-over-overlay" style="display: none;">
                 <div class="game-over-text">GAME OVER</div>
-                <button class="restart-btn" onclick="startGame()">PLAY AGAIN</button>
+                <button class="restart-btn" onclick="startGame()">再次挑戰</button>
             </div>
         </div>
 
@@ -385,7 +379,7 @@
                  onpointerleave="releaseBtn(event)">▼</div>
         </div>
 
-        <button class="btn-back" onclick="backToMenu()">◀ 返回主選單</button>
+        <button class="btn-back" onclick="backToMenu()">&lt; 返回主選單</button>
     </div>
 
     <script>
@@ -463,13 +457,13 @@
         }
 
         function showLockedNotice(featureName) {
-            toast.innerText = `🚨 [${featureName}] 暫未開放！`;
+            toast.innerText = `通知：${featureName} 暫未開放`;
             toast.classList.add('show');
             if (toastTimer) clearTimeout(toastTimer);
             toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
-        /* ---------------- 靈敏觸控與指令隊列 ---------------- */
+        /* ---------------- 觸控與指令隊列 ---------------- */
         function pressBtn(e, dir) {
             if (e) e.preventDefault();
             e.currentTarget.classList.add('active');
@@ -551,7 +545,7 @@
         }
 
         function drawGridLines() {
-            ctx.strokeStyle = "rgba(0, 255, 204, 0.08)";
+            ctx.strokeStyle = "rgba(0, 240, 255, 0.08)";
             ctx.lineWidth = 1;
 
             for (let x = 0; x <= canvas.width; x += gridSize) {
@@ -605,34 +599,27 @@
             }
 
             // 1. 清空背景
-            ctx.fillStyle = "#080808";
+            ctx.fillStyle = "#0b0e14";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 2. 若開啟網格，繪製微光網格線
+            // 2. 繪製精細畫布網格
             if (showGrid) {
                 drawGridLines();
             }
 
-            // 3. 繪製食物
-            ctx.fillStyle = "#ff007f";
-            ctx.shadowBlur = 8;
-            ctx.shadowColor = "#ff007f";
+            // 3. 繪製食物 (俐落霓虹粉)
+            ctx.fillStyle = "#ff0055";
             ctx.fillRect(food.x + 1, food.y + 1, gridSize - 2, gridSize - 2);
 
-            // 4. 繪製蛇身
+            // 4. 繪製蛇身 (蛇頭為亮白，蛇身為電光藍)
             snake.forEach((part, index) => {
-                ctx.shadowBlur = 8;
                 if (index === 0) {
                     ctx.fillStyle = "#ffffff";
-                    ctx.shadowColor = "#ffffff";
                 } else {
-                    ctx.fillStyle = "#00ffcc";
-                    ctx.shadowColor = "#00ffcc";
+                    ctx.fillStyle = "#00f0ff";
                 }
                 ctx.fillRect(part.x + 1, part.y + 1, gridSize - 2, gridSize - 2);
             });
-
-            ctx.shadowBlur = 0;
         }
 
         function endGame() {
