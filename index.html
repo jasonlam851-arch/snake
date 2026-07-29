@@ -328,36 +328,38 @@
             box-shadow: 0 4px 12px rgba(219, 39, 119, 0.4);
         }
 
-        /* ---------------- 手機操控區 ---------------- */
+        /* ---------------- 大尺寸手機操控區 ---------------- */
         .controls {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
-            gap: 8px;
-            width: 190px;
-            height: 190px;
+            gap: 12px;
+            width: 260px; /* 從 190px 大幅加大至 260px */
+            height: 260px;
             margin-top: 15px;
+            touch-action: none;
         }
 
         .btn-pad {
-            background: rgba(139, 92, 246, 0.12);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            border-radius: 8px;
-            color: #e9d5ff;
-            font-size: 1.1rem;
+            background: rgba(139, 92, 246, 0.18);
+            border: 2px solid rgba(168, 85, 247, 0.4);
+            border-radius: 14px;
+            color: #f3e8ff;
+            font-size: 1.8rem; /* 加大箭頭尺寸 */
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            transition: all 0.1s ease;
+            transition: background 0.1s ease, transform 0.1s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
         .btn-pad.active {
             background: linear-gradient(135deg, #7c3aed, #db2777);
             color: #ffffff;
             border-color: #f472b6;
-            box-shadow: 0 0 12px rgba(219, 39, 119, 0.6);
-            transform: scale(0.95);
+            box-shadow: 0 0 15px rgba(219, 39, 119, 0.8);
+            transform: scale(0.92);
         }
 
         .btn-up { grid-column: 2; grid-row: 1; }
@@ -366,16 +368,16 @@
         .btn-down { grid-column: 2; grid-row: 3; }
 
         .btn-back {
-            margin-top: 12px;
+            margin-top: 15px;
             background: transparent;
             color: #c084fc;
             border: 1px solid rgba(192, 132, 252, 0.3);
-            padding: 8px 16px;
-            font-size: 0.7rem;
+            padding: 8px 18px;
+            font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
             font-family: inherit;
-            border-radius: 4px;
+            border-radius: 6px;
             transition: all 0.2s ease;
         }
 
@@ -451,7 +453,7 @@
             </div>
         </div>
 
-        <!-- 方向觸控區 -->
+        <!-- 放大版手機觸控區 -->
         <div class="controls">
             <div class="btn-pad btn-up" 
                  onpointerdown="pressBtn(event, 'UP')" 
@@ -753,21 +755,18 @@
             const ratio = index / Math.max(1, totalLength - 1);
 
             if (currentSkin === 'red') {
-                // 紅色漸變蛇：亮粉白頭 -> 紅粉身軀漸變
                 if (index === 0) return "#ffffff";
                 const r = 244;
                 const g = Math.floor(63 + (200 - 63) * ratio);
                 const b = Math.floor(94 + (200 - 94) * ratio);
                 return `rgb(${r}, ${g}, ${b})`;
             } else if (currentSkin === 'purple') {
-                // 紫色漸變蛇：亮白頭 -> 紫粉身軀漸變
                 if (index === 0) return "#ffffff";
                 const r = Math.floor(168 + (233 - 168) * ratio);
                 const g = Math.floor(85 + (213 - 85) * ratio);
                 const b = 247;
                 return `rgb(${r}, ${g}, ${b})`;
             } else {
-                // 預設白色蛇：頭白 -> 尾部漸變淡透明白
                 const alpha = Math.max(0.3, 1 - ratio * 0.65);
                 return `rgba(255, 255, 255, ${alpha})`;
             }
@@ -797,7 +796,7 @@
             // 吃食物判定
             if (head.x === food.x && head.y === food.y) {
                 score += 10;
-                coins += 10; // 吃一顆食物獎勵 10 金幣
+                coins += 10;
                 updateCoinDisplay();
 
                 scoreElement.innerText = String(score).padStart(4, '0');
@@ -811,20 +810,17 @@
                 snake.pop();
             }
 
-            // 1. 清空背景
+            // 清空與繪製
             ctx.fillStyle = "#0d0618";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 2. 繪製網格
             if (showGrid) {
                 drawGridLines();
             }
 
-            // 3. 繪製金幣食物 (霓虹金黃)
             ctx.fillStyle = "#fbbf24";
             ctx.fillRect(food.x + 1, food.y + 1, gridSize - 2, gridSize - 2);
 
-            // 4. 根據裝備的皮膚繪製蛇身漸變
             snake.forEach((part, index) => {
                 ctx.fillStyle = getSnakePartColor(index, snake.length);
                 ctx.fillRect(part.x + 1, part.y + 1, gridSize - 2, gridSize - 2);
