@@ -18,7 +18,6 @@
         }
 
         body {
-            /* 深紫到墨黑的漸變背景 */
             background: linear-gradient(135deg, #12072b 0%, #06020e 100%);
             color: #d8b4fe;
             font-family: 'Chakra Petch', 'Noto Sans TC', sans-serif;
@@ -30,7 +29,7 @@
             overflow: hidden;
         }
 
-        /* ---------------- 主選單 & 設定面板樣式 ---------------- */
+        /* ---------------- 主選單 & 容器面板 ---------------- */
         .menu-container {
             display: flex;
             flex-direction: column;
@@ -40,19 +39,37 @@
             border: 2px solid #8b5cf6;
             box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), inset 0 0 15px rgba(236, 72, 153, 0.15);
             border-radius: 12px;
-            padding: 40px 30px;
+            padding: 30px 25px;
             width: 340px;
             text-align: center;
             z-index: 2;
+            position: relative;
+        }
+
+        /* 金幣顯示列 */
+        .coin-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #fbbf24;
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            padding: 6px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 10px rgba(251, 191, 36, 0.15);
         }
 
         .game-title {
             font-size: 1.6rem;
             font-weight: 700;
             letter-spacing: 3px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             line-height: 1.2;
-            /* 紫色到霓虹粉漸變文字 */
             background: linear-gradient(to right, #c084fc, #f43f5e);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -62,7 +79,7 @@
         .button-group {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
             width: 100%;
         }
 
@@ -70,7 +87,7 @@
             font-family: 'Chakra Petch', 'Noto Sans TC', sans-serif;
             font-size: 0.85rem;
             font-weight: 700;
-            padding: 14px 16px;
+            padding: 12px 16px;
             border: 1px solid transparent;
             border-radius: 6px;
             cursor: pointer;
@@ -83,7 +100,6 @@
             letter-spacing: 1px;
         }
 
-        /* 開始遊戲按鈕：紫粉漸變 */
         .btn-start {
             background: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
             color: #ffffff;
@@ -94,6 +110,17 @@
         .btn-start:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(219, 39, 119, 0.6);
+        }
+
+        .btn-shop {
+            background: rgba(251, 191, 36, 0.12);
+            color: #fbbf24;
+            border-color: #f59e0b;
+        }
+
+        .btn-shop:hover {
+            background: rgba(251, 191, 36, 0.25);
+            border-color: #fbbf24;
         }
 
         .btn-settings {
@@ -107,22 +134,71 @@
             border-color: #c084fc;
         }
 
-        .btn-disabled {
-            background: rgba(255, 255, 255, 0.03);
-            color: #6b7280;
-            border-color: rgba(255, 255, 255, 0.1);
-            cursor: not-allowed;
+        /* ---------------- 商城列表樣式 ---------------- */
+        .shop-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            margin-bottom: 15px;
         }
 
-        .lock-badge {
-            font-size: 0.65rem;
-            position: absolute;
-            right: 12px;
-            background: rgba(244, 63, 94, 0.15);
-            color: #f43f5e;
-            padding: 2px 6px;
+        .shop-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            padding: 10px 14px;
+            border-radius: 8px;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+
+        .item-name {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #f3e8ff;
+        }
+
+        .item-price {
+            font-size: 0.7rem;
+            color: #fbbf24;
+        }
+
+        .buy-btn {
+            font-family: 'Chakra Petch', 'Noto Sans TC', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 6px 12px;
             border-radius: 4px;
-            border: 1px solid rgba(244, 63, 94, 0.3);
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .buy-btn.equip {
+            background: rgba(139, 92, 246, 0.2);
+            color: #c084fc;
+            border-color: #8b5cf6;
+        }
+
+        .buy-btn.equipped {
+            background: #10b981;
+            color: #000;
+            border-color: #34d399;
+            cursor: default;
+        }
+
+        .buy-btn.buy {
+            background: #fbbf24;
+            color: #000;
+            border-color: #f59e0b;
         }
 
         /* ---------------- 設定選單獨立面板 ---------------- */
@@ -131,7 +207,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-size: 0.85rem;
             color: #f3e8ff;
         }
@@ -140,7 +216,7 @@
             font-family: 'Chakra Petch', 'Noto Sans TC', sans-serif;
             font-size: 0.75rem;
             font-weight: 700;
-            padding: 8px 16px;
+            padding: 6px 12px;
             border: 1px solid #c084fc;
             border-radius: 4px;
             cursor: pointer;
@@ -192,7 +268,7 @@
 
         .score-board {
             display: flex;
-            gap: 25px;
+            gap: 20px;
             font-size: 0.85rem;
             font-weight: 700;
             color: #ffffff;
@@ -313,23 +389,39 @@
 <body>
 
     <!-- 提示彈窗 -->
-    <div id="toast" class="toast">提示：功能暫未開放</div>
+    <div id="toast" class="toast">提示訊息</div>
 
     <!-- 1. 主選單介面 -->
     <div id="mainMenu" class="menu-container">
+        <!-- 主頁面頂部金幣顯示 -->
+        <div class="coin-bar">
+            COINS: <span id="mainCoinDisplay">0</span>
+        </div>
+
         <h1 class="game-title">PURPLE<br>ARCADE</h1>
         <div class="button-group">
             <button class="menu-btn btn-start" onclick="enterGame()">開始遊戲</button>
-            <button class="menu-btn btn-disabled" onclick="showLockedNotice('遊戲商城')">
-                遊戲商城 <span class="lock-badge">鎖定</span>
-            </button>
-            <button class="menu-btn btn-settings" onclick="openSettings()">
-                遊戲設定
-            </button>
+            <button class="menu-btn btn-shop" onclick="openShop()">遊戲商城</button>
+            <button class="menu-btn btn-settings" onclick="openSettings()">遊戲設定</button>
         </div>
     </div>
 
-    <!-- 2. 設定選單介面 -->
+    <!-- 2. 商城介面 -->
+    <div id="shopMenu" class="menu-container" style="display: none;">
+        <div class="coin-bar">
+            COINS: <span id="shopCoinDisplay">0</span>
+        </div>
+
+        <h1 class="game-title" style="margin-bottom: 15px;">STORE</h1>
+        
+        <div class="shop-list" id="shopListContainer">
+            <!-- 商城項目由 JS 動態生成 -->
+        </div>
+
+        <button class="btn-back" onclick="closeShop()">&lt; 返回主選單</button>
+    </div>
+
+    <!-- 3. 設定選單介面 -->
     <div id="settingsMenu" class="menu-container" style="display: none;">
         <h1 class="game-title">SETTINGS</h1>
         
@@ -338,15 +430,16 @@
             <button id="gridToggleBtn" class="toggle-btn" onclick="toggleGrid()">開啟 [ON]</button>
         </div>
 
-        <button class="btn-back" onclick="closeSettings()" style="margin-top: 15px;">&lt; 返回主選單</button>
+        <button class="btn-back" onclick="closeSettings()">&lt; 返回主選單</button>
     </div>
 
-    <!-- 3. 遊戲進行介面 -->
+    <!-- 4. 遊戲進行介面 -->
     <div id="gameScreen" class="game-screen">
         <header>
             <div class="score-board">
                 <div>SCORE: <span id="score">0000</span></div>
                 <div>HIGH: <span id="high-score">0000</span></div>
+                <div style="color: #fbbf24;">COINS: <span id="gameCoinDisplay" style="color: #fbbf24;">0</span></div>
             </div>
         </header>
 
@@ -383,6 +476,7 @@
 
     <script>
         const mainMenu = document.getElementById('mainMenu');
+        const shopMenu = document.getElementById('shopMenu');
         const settingsMenu = document.getElementById('settingsMenu');
         const gameScreen = document.getElementById('gameScreen');
         const toast = document.getElementById('toast');
@@ -393,6 +487,11 @@
         const gameOverScreen = document.getElementById("gameOver");
         const gridToggleBtn = document.getElementById("gridToggleBtn");
 
+        // 金幣顯示元素
+        const mainCoinDisplay = document.getElementById("mainCoinDisplay");
+        const shopCoinDisplay = document.getElementById("shopCoinDisplay");
+        const gameCoinDisplay = document.getElementById("gameCoinDisplay");
+
         // 21x21 對稱網格 (315px / 15px)
         const gridSize = 15;
         const tileCount = canvas.width / gridSize;
@@ -402,22 +501,109 @@
         let dy = 0;
         let score = 0;
         let highScore = localStorage.getItem("snake_high_score") || 0;
+        let coins = parseInt(localStorage.getItem("snake_coins") || "0");
         let gameLoop = null;
         let gameRunning = false;
         let toastTimer = null;
 
-        // 網格開關變數 (從 localStorage 讀取偏好，預設為 true 開啟)
+        // 網格開關變數
         let showGrid = localStorage.getItem("snake_show_grid") !== "false";
+
+        // 皮膚商城資料
+        const skins = [
+            { id: 'white', name: '原始白蛇 (頭白漸變淡)', price: 0 },
+            { id: 'red', name: '紅色漸變蛇', price: 100 },
+            { id: 'purple', name: '紫色漸變蛇', price: 500 }
+        ];
+        
+        let ownedSkins = JSON.parse(localStorage.getItem("snake_owned_skins") || '["white"]');
+        let currentSkin = localStorage.getItem("snake_current_skin") || "white";
 
         let inputQueue = [];
 
         highScoreElement.innerText = String(highScore).padStart(4, '0');
+        updateCoinDisplay();
         updateGridBtnUI();
+
+        /* ---------------- 金幣與商城邏輯 ---------------- */
+        function updateCoinDisplay() {
+            mainCoinDisplay.innerText = coins;
+            shopCoinDisplay.innerText = coins;
+            gameCoinDisplay.innerText = coins;
+            localStorage.setItem("snake_coins", coins);
+        }
+
+        function openShop() {
+            mainMenu.style.display = 'none';
+            renderShopList();
+            shopMenu.style.display = 'flex';
+        }
+
+        function closeShop() {
+            shopMenu.style.display = 'none';
+            mainMenu.style.display = 'flex';
+        }
+
+        function renderShopList() {
+            const container = document.getElementById("shopListContainer");
+            container.innerHTML = "";
+
+            skins.forEach(skin => {
+                const isOwned = ownedSkins.includes(skin.id);
+                const isEquipped = currentSkin === skin.id;
+
+                const itemDiv = document.createElement("div");
+                itemDiv.className = "shop-item";
+
+                let btnHTML = "";
+                if (isEquipped) {
+                    btnHTML = `<button class="buy-btn equipped">使用中</button>`;
+                } else if (isOwned) {
+                    btnHTML = `<button class="buy-btn equip" onclick="equipSkin('${skin.id}')">裝備</button>`;
+                } else {
+                    btnHTML = `<button class="buy-btn buy" onclick="buySkin('${skin.id}', ${skin.price})">購買</button>`;
+                }
+
+                itemDiv.innerHTML = `
+                    <div class="item-info">
+                        <div class="item-name">${skin.name}</div>
+                        <div class="item-price">${skin.price === 0 ? "免費預設" : skin.price + " 金幣"}</div>
+                    </div>
+                    ${btnHTML}
+                `;
+                container.appendChild(itemDiv);
+            });
+        }
+
+        function buySkin(skinId, price) {
+            if (coins >= price) {
+                coins -= price;
+                ownedSkins.push(skinId);
+                currentSkin = skinId;
+                
+                localStorage.setItem("snake_owned_skins", JSON.stringify(ownedSkins));
+                localStorage.setItem("snake_current_skin", currentSkin);
+                
+                updateCoinDisplay();
+                renderShopList();
+                showToast("解鎖成功並已裝備！");
+            } else {
+                showToast("金幣不足！請多玩遊戲賺取金幣");
+            }
+        }
+
+        function equipSkin(skinId) {
+            currentSkin = skinId;
+            localStorage.setItem("snake_current_skin", currentSkin);
+            renderShopList();
+            showToast("已成功更換蛇身皮膚！");
+        }
 
         /* ---------------- 選單切換與設定邏輯 ---------------- */
         function enterGame() {
             mainMenu.style.display = 'none';
             settingsMenu.style.display = 'none';
+            shopMenu.style.display = 'none';
             gameScreen.style.display = 'flex';
             startGame();
         }
@@ -453,10 +639,11 @@
             if (gameLoop) clearInterval(gameLoop);
             gameScreen.style.display = 'none';
             mainMenu.style.display = 'flex';
+            updateCoinDisplay();
         }
 
-        function showLockedNotice(featureName) {
-            toast.innerText = `通知：${featureName} 暫未開放`;
+        function showToast(msg) {
+            toast.innerText = msg;
             toast.classList.add('show');
             if (toastTimer) clearTimeout(toastTimer);
             toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
@@ -562,6 +749,30 @@
             }
         }
 
+        function getSnakePartColor(index, totalLength) {
+            const ratio = index / Math.max(1, totalLength - 1);
+
+            if (currentSkin === 'red') {
+                // 紅色漸變蛇：亮粉白頭 -> 紅粉身軀漸變
+                if (index === 0) return "#ffffff";
+                const r = 244;
+                const g = Math.floor(63 + (200 - 63) * ratio);
+                const b = Math.floor(94 + (200 - 94) * ratio);
+                return `rgb(${r}, ${g}, ${b})`;
+            } else if (currentSkin === 'purple') {
+                // 紫色漸變蛇：亮白頭 -> 紫粉身軀漸變
+                if (index === 0) return "#ffffff";
+                const r = Math.floor(168 + (233 - 168) * ratio);
+                const g = Math.floor(85 + (213 - 85) * ratio);
+                const b = 247;
+                return `rgb(${r}, ${g}, ${b})`;
+            } else {
+                // 預設白色蛇：頭白 -> 尾部漸變淡透明白
+                const alpha = Math.max(0.3, 1 - ratio * 0.65);
+                return `rgba(255, 255, 255, ${alpha})`;
+            }
+        }
+
         function drawGame() {
             if (!gameRunning) return;
 
@@ -586,6 +797,9 @@
             // 吃食物判定
             if (head.x === food.x && head.y === food.y) {
                 score += 10;
+                coins += 10; // 吃一顆食物獎勵 10 金幣
+                updateCoinDisplay();
+
                 scoreElement.innerText = String(score).padStart(4, '0');
                 if (score > highScore) {
                     highScore = score;
@@ -601,22 +815,18 @@
             ctx.fillStyle = "#0d0618";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 2. 繪製紫色畫布網格
+            // 2. 繪製網格
             if (showGrid) {
                 drawGridLines();
             }
 
-            // 3. 繪製食物 (霓虹桃紅)
-            ctx.fillStyle = "#f43f5e";
+            // 3. 繪製金幣食物 (霓虹金黃)
+            ctx.fillStyle = "#fbbf24";
             ctx.fillRect(food.x + 1, food.y + 1, gridSize - 2, gridSize - 2);
 
-            // 4. 繪製蛇身 (蛇頭為亮白，蛇身為亮紫漸變)
+            // 4. 根據裝備的皮膚繪製蛇身漸變
             snake.forEach((part, index) => {
-                if (index === 0) {
-                    ctx.fillStyle = "#ffffff";
-                } else {
-                    ctx.fillStyle = "#a855f7";
-                }
+                ctx.fillStyle = getSnakePartColor(index, snake.length);
                 ctx.fillRect(part.x + 1, part.y + 1, gridSize - 2, gridSize - 2);
             });
         }
